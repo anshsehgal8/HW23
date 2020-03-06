@@ -23,7 +23,7 @@ breaklines=true
 \affil{Department of Physics and Astronomy, Clemson University, Clemson, SC 29634-0978}
 
 \begin{abstract}
-Here's my abstract.
+The abstract will be fleshed out more at the conclusion of the calculations that will go into this paper
 \end{abstract}
 
 \section{Introduction}
@@ -35,7 +35,8 @@ The purpose of this brief paper is to present a set of computational
 exercises using
 \href{http://sourceforge.net/projects/nucnet-tools/}{NucNet Tools}
 to demonstrate these stages in a massive star.
-The exercises are presented as a series of tasks.
+
+Together we will walk through the basic stages of element fusion inside of stars, from Hydrogen and Helium to the more metallic ones such as Iron and Nickel.
 
 %\section{Updating Codes} \label{sec:docker}
 %
@@ -113,28 +114,45 @@ ignites.  The He burns to C and O (but not much Ne as we see below)
 In this triple-$\alpha$ process, the $^4$He 's combine together until they form Carbon and Oxygen, leading to the eventual buildup of the $^{16}$O seen in the plot. However, $^{20}$Ne is not formed as much, due to the fact that the energy needed to overcome the stability of the Oxygen, and the subsequent Coulomb barrier is too much. Only at extreme temperatures (closer to the core) do these elements start to form. 
 
 {\bf Task 3:}
-Study the s process that occurs during helium burning.
-Plot $^{14}$N, $^{18}$O, and $^{22}$Ne versus time.
-Next, plot $n_n = N_A \rho X_n$, the number
-density of neutrons, as a function of time.
-Use {\em wnutils} routines to retrieve the density and the mass fraction
-of neutrons vs. time.
-Note $N_A$ is Avogadro's number,
-$\rho$ is, of course, the mass density, and $X_n$ is the neutron mass fraction.
-You will since a short burst of neutrons (from $^{13}{\rm C}(\alpha, n)^{16}$O
-followed by the more steady supply from $^{22}$Ne.
-Finally, plot elemental abundances at the beginning (``[position() = 1]'') and
-end (``[last()]'') of the calculation.
-To do so, use the wnutils to plot abundances vs. nucleon number.
-Even better would be to combine the two on a single plot (use wnutils
-routines to read the abundances vs. nucleon number).
-These figures shows the ``movement''
-of abundance upwards in Z during the calculation.
-Discuss your calculations and figures.  
-Be sure to explain where the neutrons are coming from
-(ultimately the $^{14}$N).  You might consider adding a flow diagram or two.
+%Study the s process that occurs during helium burning.
+%Plot $^{14}$N, $^{18}$O, and $^{22}$Ne versus time.
+%Next, plot $n_n = N_A \rho X_n$, the number
+%density of neutrons, as a function of time.
+%Use {\em wnutils} routines to retrieve the density and the mass fraction
+%of neutrons vs. time.
+%Note $N_A$ is Avogadro's number,
+%$\rho$ is, of course, the mass density, and $X_n$ is the neutron mass fraction.
+%You will since a short burst of neutrons (from $^{13}{\rm C}(\alpha, n)^{16}$O
+%followed by the more steady supply from $^{22}$Ne.
+%Finally, plot elemental abundances at the beginning (``[position() = 1]'') and
+%end (``[last()]'') of the calculation.
+%To do so, use the wnutils to plot abundances vs. nucleon number.
+%Even better would be to combine the two on a single plot (use wnutils
+%routines to read the abundances vs. nucleon number).
+%These figures shows the ``movement''
+%of abundance upwards in Z during the calculation.
+%Discuss your calculations and figures.  
+%Be sure to explain where the neutrons are coming from
+%(ultimately the $^{14}$N).  You might consider adding a flow diagram or two.
+We now wish to consider the s-process ("slow") in Helium burning. 
+
+\begin{figure}
+\includegraphics[scale=0.7]{task3}
+\end{figure}
+
+\begin{figure}
+\includegraphics[scale=0.7]{neutron}
+\end{figure}
+
+\begin{figure}
+\includegraphics[scale=0.7]{task3_2}
+\end{figure}
+
+Notice how the final calculation yields higher abundances of heavier elements, which is to be expected given that the hydrogen and helium is being depleted to fuse more metallic elements. The graph spikes right around Carbon and Oxygen, as we expect.
 
 \section{Carbon Burning} \label{sec:C}
+
+
 
 The principal products of helium burning are $^{12}$C and $^{16}$O.  As the
 star contracts and heats, carbon burning begins.
