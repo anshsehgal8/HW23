@@ -4,6 +4,7 @@
 \usepackage{hyperref}
 \usepackage[caption=false]{subfig}
 \usepackage{listings}
+\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{float}
 \lstset{
@@ -23,7 +24,7 @@ breaklines=true
 \affil{Department of Physics and Astronomy, Clemson University, Clemson, SC 29634-0978}
 
 \begin{abstract}
-The abstract will be fleshed out more at the conclusion of the calculations that will go into this paper
+We examine the life cycle of a star by decomposing its nucleosynthesis into distinct burning stages, or "shells" to better understand the underlying processes in stellar interiors. We run calculations at increasing temperatures and densities, until the formation of metallic elements like Iron, signaling the exhaustion of the initial stellar nuclear fuel.
 \end{abstract}
 
 \section{Introduction}
@@ -38,32 +39,27 @@ to demonstrate these stages in a massive star.
 
 Together we will walk through the basic stages of element fusion inside of stars, from Hydrogen and Helium to the more metallic ones such as Iron and Nickel.
 
-%\section{Updating Codes} \label{sec:docker}
-%
-%It is most convenient to run the calculations with a
-%\href{http://github.com/mbradle/docker_single_zone}{docker single-zone}
-%image.  You will need to mount the input and output directories, as
-%described in the
-%\href{http://github.com/mbradle/docker_single_zone}{docker single-zone}
-%site.  Below I present the calculations as if you were running the single-zone
-%code directly, which some of you will do.  You can translate the instructions
-%as follows.  When I ask you to run
-%\begin{lstlisting}
-%./single_zone_network --t9_0 0.03 --rho_0 50. --network_xml ../nucnet-tools-code/data_pub/my_net.xml --zone_xml ../nucnet-tools-code/data_pub/Lodders.xml --nuc_xpath "[z <= 94]" --iterative_solver gmres --iterative_t9 2  --output_xml out.xml --tend 3.15e15
-%\end{lstlisting}
-%you can directly run this if you've installed the codes (usually with my help)
-%on linux or cygwin.  Alternatively, you can run with docker by translating to
-%\begin{lstlisting}
-%docker run -it -v ${PWD}/work/input:/input_directory -v ${PWD}/work/output:/output_directory -e VAR="@run_h.rsp" single_zone:default
-%\end{lstlisting}
-%where {\it run\_h.rsp} reads
-%\begin{verbatim}
-%--t9_0 0.03 --rho_0 50.
-%--network_xml /input_directory/data_pub/my_net.xml
-%--zone_xml /input_directory/data_pub/Lodders.xml
-%--nuc_xpath "[z <= 94]" --iterative_solver gmres --iterative_t9 2
-%--output_xml /output_directory/out.xml --tend 3.15e15
-%\end{verbatim}
+\section{Methods} \label{sec:docker}
+
+We use the docker repository for the nucleosynthesis code found in :
+
+\href{http://github.com/mbradle/docker_single_zone}{docker single-zone}
+
+
+To run, use a command like:
+\begin{lstlisting}
+docker run -it -v ${PWD}/work/input:/input_directory -v ${PWD}/work/output:/output_directory -e VAR="@run_h.rsp" single_zone:default
+\end{lstlisting}
+where {\it run\_h.rsp} reads
+\begin{verbatim}
+--t9_0 0.03 --rho_0 50.
+--network_xml /input_directory/data_pub/my_net.xml
+--zone_xml /input_directory/data_pub/Lodders.xml
+--nuc_xpath "[z <= 94]" --iterative_solver gmres --iterative_t9 2
+--output_xml /output_directory/out.xml --tend 3.15e15
+\end{verbatim}
+
+But we will edit the response file to update the increasing temperature and density at every new burning stage.
 
 \section{Hydrogen Burning} \label{sec:H}
 
@@ -71,19 +67,21 @@ The first stellar burning phase is hydrogen burning, which converts
 abundant hydrogen into helium.  In a massive star
 this occurs at higher temperature but lower density than in the Sun.
 
-{\bf Task 1:}
-
 
 Plotted below is the mass fraction of the Hydrogen and resulting Helium that is generated due to the pp chain reaction:
 
-\begin{figure}[h]
+
+\begin{figure}[H]
+\centering
 \includegraphics[scale=0.7]{task1}
 \caption{log plot of $^1$H and $^4$He as a function of time}
 \end{figure}
 
+
 We can also examine the abundances of the Carbon, Neon and Oxygen isotopes during the CNO cycle:
 
-\begin{figure}[h]
+\begin{figure}[H]
+\centering
 \includegraphics[scale=0.7]{task1_1}
 \caption{log plot of $^{12}$C,$^{14}$N, and $^{16}$O as a function of time}
 \end{figure}
@@ -99,13 +97,13 @@ Because this reaction is so slow, there is a natural saturation of Nitrogen that
 \section{Helium Burning} \label{sec:He}
 
 
-{\bf Task 2:}
 
 Once a star burns hydrogen to helium, it contracts and heats until the He
 ignites.  The He burns to C and O (but not much Ne as we see below)
 
 
-\begin{figure}[h]
+\begin{figure}[H]
+\centering
 \includegraphics[scale=0.7]{task2}
 \caption{log plot of $^4$He,$^{12}$C, $^{16}$O as a function of time. $^{20]}$Ne is also plotted to show that Oxygen is really the stopping point for the triple alpha process}
 \end{figure}
@@ -113,30 +111,10 @@ ignites.  The He burns to C and O (but not much Ne as we see below)
 
 In this triple-$\alpha$ process, the $^4$He 's combine together until they form Carbon and Oxygen, leading to the eventual buildup of the $^{16}$O seen in the plot. However, $^{20}$Ne is not formed as much, due to the fact that the energy needed to overcome the stability of the Oxygen, and the subsequent Coulomb barrier is too much. Only at extreme temperatures (closer to the core) do these elements start to form. 
 
-{\bf Task 3:}
-%Study the s process that occurs during helium burning.
-%Plot $^{14}$N, $^{18}$O, and $^{22}$Ne versus time.
-%Next, plot $n_n = N_A \rho X_n$, the number
-%density of neutrons, as a function of time.
-%Use {\em wnutils} routines to retrieve the density and the mass fraction
-%of neutrons vs. time.
-%Note $N_A$ is Avogadro's number,
-%$\rho$ is, of course, the mass density, and $X_n$ is the neutron mass fraction.
-%You will since a short burst of neutrons (from $^{13}{\rm C}(\alpha, n)^{16}$O
-%followed by the more steady supply from $^{22}$Ne.
-%Finally, plot elemental abundances at the beginning (``[position() = 1]'') and
-%end (``[last()]'') of the calculation.
-%To do so, use the wnutils to plot abundances vs. nucleon number.
-%Even better would be to combine the two on a single plot (use wnutils
-%routines to read the abundances vs. nucleon number).
-%These figures shows the ``movement''
-%of abundance upwards in Z during the calculation.
-%Discuss your calculations and figures.  
-%Be sure to explain where the neutrons are coming from
-%(ultimately the $^{14}$N).  You might consider adding a flow diagram or two.
 We now wish to consider the s-process ("slow") in Helium burning. 
 
 \begin{figure}[H]
+\centering
 \includegraphics[scale=0.7]{task3}
 \caption{log plot of $^{14}$N,$^{18}$O, $^{22}$Ne as a function of time.}
 \end{figure}
@@ -144,7 +122,9 @@ We now wish to consider the s-process ("slow") in Helium burning.
 The Nitrogen slowly combines with alpha particles to form $^{18}$O, which can then combine with more Helium to form the $^{22}$Ne.
 
 \begin{figure}[H]
+\centering
 \includegraphics[scale=0.7]{neutron}
+\caption{Neutron Number Density as a function of time, on a log-log scale}
 \end{figure}
 
 Here we plot the number density of neutrons over time. In particular, there is a short burst from the reaction:
@@ -158,6 +138,7 @@ The products include a neutron, leading to the increase of $n_n$. Then, there is
 Finally, we examine the abundances of each element at the beginning and end of the calculation to see the evolution of the composition of the star. 
 
 \begin{figure}[H]
+\centering
 \includegraphics[scale=0.7]{task3_2}
 \end{figure}
 
@@ -170,16 +151,25 @@ Notice how the final calculation yields higher abundances of heavier elements, w
 The principal products of helium burning are $^{12}$C and $^{16}$O.  As the
 star contracts and heats, carbon burning begins.
 
-{\bf Task 4:}
-Run a carbon burning calculation on the last zone out your He burning output
-at $T_9 = 0.9$ and density
-$\rho = 15,000$ g/cc for $10^5$ years.
+The key reactions that take place are:
 
-Graph the mass fractions of $^{12}$C,
-$^{16}$O, $^{20}$Ne, and $^{24}$Mg as a function of time (we suggest log x vs.
-linear y and the x range from 0.01 to 1.e4 years).  Comment on what is going
-on.  In particular, note the key reactions $^{12}$C + $^{12}$C and $^{12}$C +
-$^{16}$O.  Also note that if the star forms a white dwarf after this burning,
+\begin{align}
+^{12}C + ^{12}C \rightarrow ^{24}Mg^* \rightarrow ^{24}Mg + \gamma \\
+\rightarrow ^{20}Ne + ^{4}He \\
+\rightarrow ^{23}Na + p \\
+^{12}C +^{16}O \rightarrow ^{24}Mg + ^{4}He
+\end{align}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{task4}
+\caption{Mass Fraction of the various relevant isotopes to Carbon Burning as a function of time}
+\end{figure}
+
+Notice that as the $^{12}C$ and $^{16}O$ is used up in the aforementioned reaction, there is a commensurate rise in the $^{20}Ne$ and $^{24}Mg$
+
+Also note that if the star forms a white dwarf after this burning,
 it will be a O/Ne/Mg white dwarf, not a C/O white dwarf, as it would have
 been after helium burning.
 
@@ -191,12 +181,17 @@ burning.  This burning stage comprises $^{20}{\rm Ne} + \gamma \to ^{16}{\rm O}
 which effectively is $^{20}{\rm Ne} + ^{20}{\rm Ne} \to ^{16}{\rm O} +
 ^{24}{\rm Mg}$.
 
-{\bf Task 5:}
-Using the output from your carbon burning calculation, run a neon burning
-calculation at $T_9 = 1.4$ and $\rho = 1.5 \times 10^5$ for 1000 years.
-Graph the mass fractions of $^{16}$O, $^{20}$Ne, $^{24}$Mg, and $^{28}$Si
-as a function of time (same layout as the carbon burning plot).  Note
-the rise of $^{28}$Si late from $^{24}$Mg + $^4$He.
+We run the calculation for 1000 years at an increased $\rho$ and T$_9$
+and find the following abundances
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{task5}
+\caption{Mass Fraction of the various relevant isotopes to Neon Burning as a function of time}
+\end{figure}
+
+
+These match our predictions from the reaction equations above; in particular, the rise of $^{16}O$  and subsequent depletion of $^{20}Ne$ 
 
 \section{Oxygen Burning} \label{sec:O}
 
@@ -205,10 +200,15 @@ is $^{16}{\rm O} + ^{16}{\rm O} \to ^{32}{\rm S}^*$.  The excited $^{32}$S
 nucleus then de-excites mostly to $^{28}$Si (and an alpha)
 or $^{32}$S.
 
-{\bf Task 6:}  Use the output from your neon burning to compute oxygen burning
-at $T_9 = 2.1$ and $\rho = 1.5\times 10^6$ g/cc for one year.  Graph the
-mass fractions of $^{16}$O, $^{28}$Si, and $^{32}$S as a function of time and
-comment.
+This is represented in our mass fractions:
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{task6}
+\caption{Mass Fraction of the various relevant isotopes to Oxygen Burning as a function of time}
+\end{figure}
+
+We run the calculation for a $T_9 = 2.1$ and $\rho = 1.5\times 10^6$ g/cc for one year.
 
 Also occurring during oxygen burning is the ``gamma'' process.  The initially
 present heavy nuclei are disintegrated.  First neutrons then protons and
@@ -216,11 +216,17 @@ alphas are emitted.  The nuclei ``flow'' down the proton-rich side of the
 stable nuclei.  If this matter ``freezes out'', proton-rich nuclei are
 formed (the so-called ``p-nuclei'').
 
-{\bf Task 7:}  Graph the abundances vs. mass number at the beginning and end of
-your oxygen burning calculation.  Note how nuclei ``melt'' towards the
-iron-group region.  You might also make an abundances vs. nucleon
-\href{https://wnutils.readthedocs.io/en/latest/animate_tutorial.html#animating-the-abundances-versus-nucleon-number}{movie} and/or a movie of the
-\href{https://wnutils.readthedocs.io/en/latest/animate_tutorial.html#animating-the-network-abundances}{network abundances}.
+
+We take a look at the overall abundances as a function of mass number between the initial and final calculation. The overplotting gives a sense of the time evolution.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{task7}
+\caption{Abundances versus corresponding atomic number, at both the initial and final calculation time step}
+\end{figure}
+
+Note how nuclei ``melt'' towards the
+iron-group region. 
 
 \section{Silicon Burning} \label{sec:Si}
 
@@ -231,17 +237,20 @@ capture onto the remaining Si to create heavier nuclei.  In fact the
 burning proceeds through a quasi-equilibrium
 \cite{1968ApJS...16..299B,1998ApJ...498..808M}.
 
-{\bf Task 8:}  Use your output from your oxygen burning to run silicon burning
-at $T_9 = 3.5$ and $\rho = 1.5e7$ g/cc for one year.
-Plot the mass fractions of
-$^{28}$Si, $^{56}$Fe, and $^{56}$Ni vs. time and discuss.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{task8}
+\caption{Mass Fraction of the various relevant isotopes to Silicon Burning as a function of time}
+\end{figure}
+Now the star has contracted to an extreme level, with $T_9 = 3.5$ and $\rho = 1.5e7$ g/cc in our 1 year calculation.
+
 
 You might be surprised that the abundance of $^{56}$Ni is never particularly
 large.  The reason is that the silicon burning is sufficiently slow that
 weak decays have time to occur during the burning and thus change the
 neutron richness of the nuclei present.  Also, at this temperature, there
-is a preference for $^{54}$Fe and two protons over $^{56}$Ni--see this by
-adding fe54 to your task 8 plot.
+is a preference for $^{54}$Fe and two protons over $^{56}$Ni, as evidence by its relatively high abundance. 
 
 \section{Conclusion}
 
